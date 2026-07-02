@@ -15,14 +15,13 @@ public class MarshallBuilder {
 
 	private MarshallBuilder() {
 		this.buffer = ByteBuffer.allocate(INITIAL_CAPACITY).order(ByteOrder.BIG_ENDIAN);
-		;
 	}
 
 	private void ensureCapacity(int additionalBytes) {
 		int required = buffer.position() + additionalBytes;
 		if (required > buffer.capacity()) {
 			int newCapacity = Math.max(buffer.capacity() * 2, required);
-			ByteBuffer newBuffer = ByteBuffer.allocate(newCapacity);
+			ByteBuffer newBuffer = ByteBuffer.allocate(newCapacity).order(ByteOrder.BIG_ENDIAN);
 			buffer.flip();
 			newBuffer.put(buffer);
 			buffer = newBuffer;
@@ -34,7 +33,7 @@ public class MarshallBuilder {
 			ensureCapacity(Integer.BYTES);
 			buffer.putInt(-1);
 		} else {
-			ensureCapacity(Integer.BYTES + value.length);
+			ensureCapacity(Integer.BYTES + (value.length * Character.BYTES));
 			buffer.putInt(value.length);
 			for (char c : value) {
 				buffer.putChar(c);

@@ -1,9 +1,9 @@
 package org.peregrinusrealm.utils.marshall;
 
 public interface Marshallable {
+	
+	public void marshall(MarshallBuilder builder);
 
-	public byte[] marshall();
-
-	public void unmarshall(byte[] data);
+	public void unmarshall(MarshallDestructor destructor);
 
 }
